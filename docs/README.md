@@ -363,7 +363,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 #### 获取用户Cookie
 
-接口：`/user/getCookie`
+接口：`/user/applyCookie`
 
 参数：
 
