@@ -2,15 +2,19 @@ const jsonFile = require('jsonfile');
 const getSign = require('../util/sign');
 
 const user = {
-  '/cookie': ({req, res, globalCookie}) => {
+  '/cookie': ({ req, res, globalCookie }) => {
+    const { raw } = req.query;
+    if (Number(raw)) {
+      return res.send(globalCookie.rawCookie);
+    }
     res.send({
       result: 100,
       data: req.cookies
     });
   },
 
-  '/refresh': async ({req, res, request}) => {
-    const {uin, qm_keyst, qqmusic_key} = req.cookies
+  '/refresh': async ({ req, res, request }) => {
+    const { uin, qm_keyst, qqmusic_key } = req.cookies
     if (!uin || !(qm_keyst || qqmusic_key)) {
       return res.send({
         result: 301,
@@ -37,12 +41,12 @@ const user = {
       JSON.stringify(data)
     )}`;
 
-    const result = await request({url})
+    const result = await request({ url })
 
     if (result.req1 && result.req1.data && result.req1.data.musickey) {
       const musicKey = result.req1.data.musickey;
       ['qm_keyst', 'qqmusic_key'].forEach((k) => {
-        res.cookie(k, musicKey, {expires: new Date(Date.now() + 86400000)})
+        res.cookie(k, musicKey, { expires: new Date(Date.now() + 86400000) })
       })
       return res.send({
         result: 100,
@@ -57,8 +61,8 @@ const user = {
     })
   },
 
-  '/applyCookie': ({req, res, globalCookie}) => {
-    const {id} = req.query;
+  '/applyCookie': ({ req, res, globalCookie }) => {
+    const { id } = req.query;
     if (!id) {
       return res.send({
         result: 500,
@@ -70,7 +74,7 @@ const user = {
     Object.keys(cookieObj).forEach((k) => {
       // 有些过大的cookie 对登录校验无用，但是会导致报错
       if (cookieObj[k].length < 255) {
-        res.cookie(k, cookieObj[k], {expires: new Date(Date.now() + 86400000)});
+        res.cookie(k, cookieObj[k], { expires: new Date(Date.now() + 86400000) });
       }
     });
     return res.send({
@@ -79,8 +83,9 @@ const user = {
     })
   },
 
-  '/setCookie': ({req, res, globalCookie}) => {
-    const {data} = req.body;
+  '/setCookie': ({ req, res, globalCookie }) => {
+    const { data } = req.body;
+    globalCookie.rawCookie = data;
     const allCookies = globalCookie.allCookies();
     const userCookie = {};
     data.split('; ').forEach((c) => {
@@ -94,6 +99,7 @@ const user = {
     userCookie.uin = (userCookie.uin || '').replace(/\D/g, '');
     allCookies[userCookie.uin] = userCookie;
     jsonFile.writeFile('data/allCookies.json', allCookies);
+    jsonFile.writeFile('data/rawCookie.json', globalCookie.rawCookie);
 
     // 这里写死我的企鹅号，作为存在服务器上的cookie
     if (String(userCookie.uin) === String(global.QQ)) {
@@ -111,8 +117,8 @@ const user = {
   },
 
   // 获取用户歌单
-  '/detail': async ({req, res, request}) => {
-    const {id} = req.query;
+  '/detail': async ({ req, res, request }) => {
+    const { id } = req.query;
 
     if (!id) {
       return res.send({
@@ -144,8 +150,8 @@ const user = {
   },
 
   // 获取用户创建的歌单
-  '/playlist': async ({req, res, request}) => {
-    const {id, raw} = req.query;
+  '/playlist': async ({ req, res, request }) => {
+    const { id, raw } = req.query;
     if (!id) {
       return res.send({
         result: 500,
@@ -198,7 +204,7 @@ const user = {
       favDiss.diss_cover = 'http://y.gtimg.cn/mediastyle/global/img/cover_like.png';
     } else {
       try {
-        const detail = await user["/detail"]({req: {query: {id}}, request});
+        const detail = await user["/detail"]({ req: { query: { id } }, request });
         console.log(detail);
         const fav = detail.data.mymusic[0];
         favDiss = {
@@ -230,8 +236,8 @@ const user = {
   },
 
   // 获取用户收藏的歌单
-  '/collect/playlist': async ({req, res, request}) => {
-    const {id = req.cookies.uin, pageNo = 1, pageSize = 20, raw} = req.query;
+  '/collect/playlist': async ({ req, res, request }) => {
+    const { id = req.cookies.uin, pageNo = 1, pageSize = 20, raw } = req.query;
     if (!id) {
       return res.send({
         result: 500,
@@ -252,7 +258,7 @@ const user = {
     if (Number(raw)) {
       return res.send(result);
     }
-    const {totaldiss, cdlist} = result.data;
+    const { totaldiss, cdlist } = result.data;
     return res.send({
       result: 100,
       data: {
@@ -265,8 +271,8 @@ const user = {
   },
 
   // 获取用户收藏的专辑
-  '/collect/album': async ({req, res, request}) => {
-    const {id = req.cookies.uin, pageNo = 1, pageSize = 20, raw} = req.query;
+  '/collect/album': async ({ req, res, request }) => {
+    const { id = req.cookies.uin, pageNo = 1, pageSize = 20, raw } = req.query;
     if (!id) {
       return res.send({
         result: 500,
@@ -287,7 +293,7 @@ const user = {
     if (Number(raw)) {
       return res.send(result);
     }
-    const {totalalbum, albumlist} = result.data;
+    const { totalalbum, albumlist } = result.data;
     return res.send({
       result: 100,
       data: {
@@ -300,8 +306,8 @@ const user = {
   },
 
   // 获取关注的歌手
-  '/follow/singers': async ({req, res, request}) => {
-    const {id = req.cookies.uin, pageNo = 1, pageSize = 20, raw} = req.query;
+  '/follow/singers': async ({ req, res, request }) => {
+    const { id = req.cookies.uin, pageNo = 1, pageSize = 20, raw } = req.query;
     if (!id) {
       return res.send({
         result: 500,
@@ -342,8 +348,8 @@ const user = {
   },
 
   // 关注歌手操作
-  '/follow': async ({req, res, request}) => {
-    const {singermid, raw, operation = 1, type = 1} = req.query;
+  '/follow': async ({ req, res, request }) => {
+    const { singermid, raw, operation = 1, type = 1 } = req.query;
 
     const urlMap = {
       12: 'https://c.y.qq.com/rsc/fcgi-bin/fcg_order_singer_del.fcg',
@@ -394,8 +400,8 @@ const user = {
   },
 
   // 获取关注的用户
-  '/follow/users': async ({req, res, request}) => {
-    const {id = req.cookies.uin, pageNo = 1, pageSize = 20, raw} = req.query;
+  '/follow/users': async ({ req, res, request }) => {
+    const { id = req.cookies.uin, pageNo = 1, pageSize = 20, raw } = req.query;
     if (!id) {
       return res.send({
         result: 500,
@@ -436,8 +442,8 @@ const user = {
   },
 
   // 获取用户粉丝
-  '/fans': async ({req, res, request}) => {
-    const {id = req.cookies.uin, pageNo = 1, pageSize = 20, raw} = req.query;
+  '/fans': async ({ req, res, request }) => {
+    const { id = req.cookies.uin, pageNo = 1, pageSize = 20, raw } = req.query;
     if (!id) {
       return res.send({
         result: 500,
