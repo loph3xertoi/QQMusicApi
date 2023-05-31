@@ -399,7 +399,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 #### 用户创建的歌单
 
-接口：`/user/songlist`
+接口：`/user/playlist`
 
 参数：
 
@@ -407,11 +407,11 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 这个接口比上一个接口更纯粹，只获取创建的歌单，且数据结构更简单，非必须登陆 Cookie，但如果用户未公开主页时，只有本人的 Cookie 才能获取数据
 
-示例：[/user/songlist?id=123456](http://api.qq.jsososo.com/user/songlist?id=123456)
+示例：[/user/playlist?id=123456](http://api.qq.jsososo.com/user/playlist?id=123456)
 
 #### 用户收藏的歌单
 
-接口：`/user/collect/songlist`
+接口：`/user/collect/playlist`
 
 参数：
 
@@ -421,7 +421,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 `pageSize`: 默认 20
 
-示例：[/user/collect/songlist?id=123456](http://api.qq.jsososo.com/user/collect/songlist?id=123456)
+示例：[/user/collect/playlist?id=123456](http://api.qq.jsososo.com/user/collect/playlist?id=123456)
 
 #### 用户收藏的专辑
 
@@ -441,7 +441,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 #### 1、获取歌单详情
 
-接口：`/songlist`
+接口：`/playlist`
 
 参数：
 `id`: 歌单id 必填
@@ -458,19 +458,19 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 }
 ```
 
-示例：[/songlist?id=2429907335](http://api.qq.jsososo.com/songlist?id=2429907335)
+示例：[/playlist?id=2429907335](http://api.qq.jsososo.com/playlist?id=2429907335)
 
 #### 2、获取歌单分类
 
-接口：`/songlist/category`
+接口：`/playlist/category`
 
 这个接口没有参数，返回几种类型下的小分类 `id` 和 `name`，不同于歌手的筛选，搜索歌单时只能用一个 `id`，不能用且关系。
 
-示例：[/songlist/category](http://api.qq.jsososo.com/songlist/category)
+示例：[/playlist/category](http://api.qq.jsososo.com/playlist/category)
 
 #### 3、根据分类获取歌单
 
-接口：`/songlist/list`
+接口：`/playlist/list`
 
 参数
 
@@ -482,13 +482,13 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 `category`: 分类 id，默认 10000000 （全部），其他值从上面的分类接口获取
 
-示例：[/songlist/list](http://api.qq.jsososo.com/songlist/list)
+示例：[/playlist/list](http://api.qq.jsososo.com/playlist/list)
 
 #### 4、歌曲id、mid的哈希表
 
 !> 这个接口强制使用浏览器传来的用户 Cookie 信息
 
-接口：`/songlist/map`
+接口：`/playlist/map`
 
 参数：
 
@@ -500,7 +500,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 !> 这个接口强制使用浏览器传来的用户 Cookie 信息
 
-接口：`/songlist/add`
+接口：`/playlist/add`
 
 参数：
 
@@ -512,7 +512,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 !> 这个接口强制使用浏览器传来的用户 Cookie 信息
 
-接口：`/songlist/remove`
+接口：`/playlist/remove`
 
 参数：
 
@@ -526,7 +526,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 !> 这个接口强制使用浏览器传来的用户 Cookie 信息
 
-接口：`/songlist/create`
+接口：`/playlist/create`
 
 参数：
 
@@ -538,7 +538,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 !> 这个接口强制使用浏览器传来的用户 Cookie 信息
 
-接口：`/songlist/delete`
+接口：`/playlist/delete`
 
 参数：
 
@@ -548,7 +548,7 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 !> 这个接口强制使用浏览器传来的用户 Cookie 信息
 
-接口：`/songlist/collect`
+接口：`/playlist/collect`
 
 参数：
 

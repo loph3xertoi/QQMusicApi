@@ -69,7 +69,7 @@ const album = {
             ct: 24,
             cv: 10000
           },
-          albumSonglist: {
+          albumPlaylist: {
             method: "GetAlbumSongList",
             param: {
               albumMid: albummid,
@@ -91,9 +91,9 @@ const album = {
     const resData = {
       result: 100,
       data: {
-        list: result.albumSonglist.data.songList.map((item) => item.songInfo),
-        total: result.albumSonglist.data.totalNum,
-        albummid: result.albumSonglist.data.albumMid,
+        list: result.albumPlaylist.data.songList.map((item) => item.songInfo),
+        total: result.albumPlaylist.data.totalNum,
+        albummid: result.albumPlaylist.data.albumMid,
       }
     };
 

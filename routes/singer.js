@@ -159,7 +159,7 @@ module.exports = {
     if (Number(raw)) {
       res.send(result);
     } else {
-      const { songlist: list, singer_info: singer, singer_brief, desc, total_song: total, extras } = result.singer.data;
+      const { playlist: list, singer_info: singer, singer_brief, desc, total_song: total, extras } = result.singer.data;
       list.forEach((o, i) => {
         Object.assign(o, extras[i] || {});
       });

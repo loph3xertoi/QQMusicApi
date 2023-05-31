@@ -6,7 +6,7 @@ module.exports = {
       url: 'http://u.y.qq.com/cgi-bin/musicu.fcg',
       data: {
         data: JSON.stringify({
-          songlist: {
+          playlist: {
             module: "mb_track_radio_svr",
             method: "get_radio_track",
             param: {
@@ -54,7 +54,7 @@ module.exports = {
       url: 'http://u.y.qq.com/cgi-bin/musicu.fcg',
       data: {
         data: JSON.stringify({
-          songlist: {
+          playlist: {
             module: "mb_track_radio_svr",
             method: "get_radio_track",
             param: {
@@ -85,7 +85,7 @@ module.exports = {
 
     res.send({
       result: 100,
-      data: result.songlist.data,
+      data: result.playlist.data,
     })
   },
 }

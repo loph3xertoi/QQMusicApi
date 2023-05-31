@@ -39,12 +39,12 @@ module.exports = {
     if (Number(raw)) {
       res.send(result);
     } else {
-      const {lan, type, songlist} = result.new_song.data;
+      const {lan, type, playlist} = result.new_song.data;
       res.send({
         result: 100,
         data: {
           lan,
-          list: songlist,
+          list: playlist,
           type,
         },
       });

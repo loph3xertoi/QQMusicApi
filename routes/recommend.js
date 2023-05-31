@@ -1,5 +1,5 @@
 const cheerio = require('cheerio');
-const songlist = require('./songlist');
+const playlist = require('./playlist');
 
 module.exports = {
   '/playlist': async ({req, res, request}) => {
@@ -109,7 +109,7 @@ module.exports = {
       })
     }
     req.query.id = id;
-    return songlist["/"]({req, res, request});
+    return playlist["/"]({req, res, request});
   },
 
   // banner 日推

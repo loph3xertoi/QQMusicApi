@@ -18,22 +18,22 @@ const user = {
       })
     }
     const data = {
-      req1: {
+      req_1: {
         module: "QQConnectLogin.LoginServer",
         method: "QQLogin",
         param: {
           expired_in: 7776000, //不用管
-          // onlyNeedAccessToken: 0, //不用管
-          // forceRefreshToken: 0, //不用管
-          // access_token: "6B0C62126368CA1ACE16C932C679747E", //access_token
-          // refresh_token: "25BACF1650EE2592D06BCC19EEAD7AD6", //refresh_token
+          onlyNeedAccessToken: 0, //不用管
+          forceRefreshToken: 0, //不用管
+          access_token: "6B0C62126368CA1ACE16C932C679747E", //access_token
+          refresh_token: "25BACF1650EE2592D06BCC19EEAD7AD6", //refresh_token
           musicid: uin, //uin或者web_uin 微信没试过
           musickey: qm_keyst || qqmusic_key, //key
         },
       },
     };
     const sign = getSign(data);
-    let url = `https://u6.y.qq.com/cgi-bin/musics.fcg?sign=${sign}&format=json&inCharset=utf8&outCharset=utf-8&data=${encodeURIComponent(
+    let url = `https://u.y.qq.com/cgi-bin/musics.fcg?sign=${sign}&format=json&inCharset=utf8&outCharset=utf-8&data=${encodeURIComponent(
       JSON.stringify(data)
     )}`;
 
@@ -57,7 +57,7 @@ const user = {
     })
   },
 
-  '/getCookie': ({req, res, globalCookie}) => {
+  '/applyCookie': ({req, res, globalCookie}) => {
     const {id} = req.query;
     if (!id) {
       return res.send({
@@ -144,7 +144,7 @@ const user = {
   },
 
   // 获取用户创建的歌单
-  '/songlist': async ({req, res, request}) => {
+  '/playlist': async ({req, res, request}) => {
     const {id, raw} = req.query;
     if (!id) {
       return res.send({
@@ -223,13 +223,14 @@ const user = {
           hostuin: id, // 这里不采用 result.data.hostuin, 因为微信登录的超长id超出了js安全数字范围
           encrypt_uin: result.data.encrypt_uin,
           hostname: result.data.hostname,
+          total: result.data.totoal,
         }
       }
     })
   },
 
   // 获取用户收藏的歌单
-  '/collect/songlist': async ({req, res, request}) => {
+  '/collect/playlist': async ({req, res, request}) => {
     const {id = req.cookies.uin, pageNo = 1, pageSize = 20, raw} = req.query;
     if (!id) {
       return res.send({
