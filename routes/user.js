@@ -2,7 +2,7 @@ const jsonFile = require('jsonfile');
 const getSign = require('../util/sign');
 
 const user = {
-  '/cookie': ({ req, res, globalCookie }) => {
+  '/getCookie': ({ req, res, globalCookie }) => {
     const { raw } = req.query;
     if (Number(raw)) {
       return res.send(globalCookie.rawCookie);

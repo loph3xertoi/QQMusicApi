@@ -373,9 +373,10 @@ const url = `${domain}${s}${strMediaMid}${e}?guid=${guid}&vkey=${vkey}&fromtag=8
 
 #### 查看当前Cookie
 
-接口：`/user/cookie`
+接口：`/user/getCookie`
 
-无需参数，返回为当前网站下的 `cookie` (`Object` )。
+参数raw=0 返回为当前网站下的 `cookie` (`Object` )。
+参数raw=1 返回为当前网站下的原始字符串类型的cookie。
 
 #### 刷新登陆
 

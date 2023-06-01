@@ -5,7 +5,7 @@ const Request = require('../util/request');
 const cache = new Cache();
 
 const blackFunc = new Set([
-  'user/cookie',
+  'user/getCookie',
   'user/applyCookie',
   'user/setCookie',
 ])
