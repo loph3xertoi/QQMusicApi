@@ -66,6 +66,10 @@ const song = {
         s: 'F000',
         e: '.flac',
       },
+      ogg: {
+        s: 'O000',
+        e: '.ogg',
+      },
     };
     const typeObj = typeMap[type];
 
