@@ -532,7 +532,7 @@ module.exports = {
         needNewCode: 0,
         g_tk: 5381,
         uin: req.cookies.uin,
-        delnum: 1,
+        delnum: dirid.split(",").length,
         deldirids: dirid,
         forcedel: 1,
         formsender: 1,
