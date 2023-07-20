@@ -13,7 +13,7 @@ const album = {
     }
 
     try {
-      const pageInfo = await request(`https://y.qq.com/n/yqq/album/${albummid}.html`, {dataType: 'raw'});
+      const pageInfo = await request(`https://y.qq.com/n/ryqq/albumDetail/${albummid}`, {dataType: 'raw'});
       const $ = cheerio.load(pageInfo);
       let albumInfo = {};
       try {
