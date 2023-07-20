@@ -1,5 +1,6 @@
 const StringHelper = require('../util/StringHelper');
 const getSign = require('../util/sign');
+const iconv = require('iconv-lite');
 
 module.exports = {
   // 根据 id 获取歌单详情
@@ -521,12 +522,13 @@ module.exports = {
     let result = await request({
       url: 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_fav_modsongdir.fcg?g_tk=5381',
       method: 'post',
+      responseType: 'arraybuffer',
       data: StringHelper.changeUrlQuery({
         loginUin: req.cookies.uin,
         hostUin: 0,
         format: 'fs',
-        inCharset: 'GB2312',
-        outCharset: 'gb2312',
+        inCharset: 'utf8',
+        outCharset: 'utf8',
         notice: 0,
         platform: 'yqq',
         needNewCode: 0,
@@ -544,8 +546,9 @@ module.exports = {
     }, {
       dataType: 'raw',
     });
-    result = JSON.parse(result.replace(/(^.+\()|(\).+$)/g, ''));
 
+    result = iconv.decode(result, 'gb2312');
+    result = JSON.parse(result.replace(/(^.+\()|(\).+$)/g, ''));
     switch (Number(result.code)) {
       case 0:
         return res.send({
@@ -576,12 +579,13 @@ module.exports = {
         errMsg: 'id or op?',
       })
     }
-    const result = await request({
+    let result = await request({
       url: 'https://c.y.qq.com/folder/fcgi-bin/fcg_qm_order_diss.fcg',
+      responseType: 'arraybuffer',
       data: {
         loginUin: req.cookies.uin,
         hostUin: 0,
-        inCharset: 'GB2312',
+        inCharset: 'utf8',
         outCharset: 'utf8',
         platform: 'yqq',
         format: 'json',
@@ -603,6 +607,8 @@ module.exports = {
     }, {
       dataType: 'raw'
     });
+    result = iconv.decode(result, 'gb2312');
+    result = JSON.parse(result.replace(/(^.+\()|(\).+$)/g, ''));
     if (result.code) {
       return res.send({
         result: 200,

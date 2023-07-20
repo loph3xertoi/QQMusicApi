@@ -18,8 +18,8 @@ const handleResult = (res, result, errMsg, successMsg) => {
 }
 
 module.exports = {
-  '/': async ({req, res, request}) => {
-    const {id, pageNo = 1, pageSize = 20, type = 0, raw, biztype = 1} = req.query;
+  '/': async ({ req, res, request }) => {
+    const { id, pageNo = 1, pageSize = 20, type = 0, raw, biztype = 1 } = req.query;
     if (!id) {
       return res.send({
         result: 500,
@@ -60,8 +60,8 @@ module.exports = {
   },
 
   // 发送评论
-  '/send': async ({req, res, request}) => {
-    const {id, biztype, content} = req.query;
+  '/send': async ({ req, res, request }) => {
+    const { id, biztype, content } = req.query;
     if (!id || !biztype || !content) {
       return res.send({
         result: 500,
@@ -75,15 +75,16 @@ module.exports = {
       })
     }
     req.query.ownCookie = 1;
-    const result = await request({
+    let result = await request({
       url: 'https://c.y.qq.com/base/fcgi-bin/fcg_global_comment_h5.fcg',
+      responseType: 'arraybuffer',
       data: {
         g_tk: 1157392233,
         loginUin: req.cookies.uin,
         hostUin: 0,
         format: 'json',
         inCharset: 'utf8',
-        outCharset: 'GB2312',
+        outCharset: 'utf8',
         cmd: 1,
         reqtype: 2,
         biztype,
@@ -94,7 +95,7 @@ module.exports = {
         Referer: 'https://y.qq.com',
       },
     });
-
+    result = iconv.decode(result, 'gb2312');
     handleResult(res, result, '反正是发送失败了', {
       message: '发送成功',
       newCommentId: result.newcommentid,
@@ -102,8 +103,8 @@ module.exports = {
   },
 
   // 删除评论
-  '/del': async ({req, res, request}) => {
-    const {id} = req.query;
+  '/del': async ({ req, res, request }) => {
+    const { id } = req.query;
     if (!id) {
       return res.send({
         result: 500,
@@ -111,25 +112,26 @@ module.exports = {
       })
     }
     req.query.ownCookie = 1;
-    const result = await request({
+    let result = await request({
       url: 'https://c.y.qq.com/base/fcgi-bin/fcg_global_comment_h5.fcg',
+      responseType: 'arraybuffer',
       data: {
         g_tk: 1157392233,
         loginUin: req.cookies.uin,
         hostUin: 0,
         format: 'json',
         inCharset: 'utf8',
-        outCharset: 'GB2312',
+        outCharset: 'utf8',
         cmd: 3,
         commentid: id,
       }
     });
-
+    result = iconv.decode(result, 'gb2312');
     handleResult(res, result, '反正是删除失败了', '删除成功');
   },
 
-  '/like': async ({req, res, request}) => {
-    const {id, type = 1} = req.query;
+  '/like': async ({ req, res, request }) => {
+    const { id, type = 1 } = req.query;
     req.query.ownCookie = 1;
     if (!id) {
       return res.send({
@@ -137,19 +139,21 @@ module.exports = {
         errMsg: 'id ?'
       })
     }
-    const result = await request({
+    let result = await request({
       url: 'https://c.y.qq.com/base/fcgi-bin/fcg_global_comment_praise_h5.fcg',
+      responseType: 'arraybuffer',
       data: {
         g_tk: 1157392233,
         loginUin: req.cookies.uin,
         format: 'json',
         inCharset: 'utf8',
-        outCharset: 'GB2312',
+        outCharset: 'utf8',
         cmd: type,
         reqtype: 2,
         commentid: id,
       }
     });
+    result = iconv.decode(result, 'gb2312');
     handleResult(res, result, '反正是操作失败了', '操作成功');
   },
 }
