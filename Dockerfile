@@ -11,6 +11,6 @@ VOLUME ["./data","./bin"]
 RUN npm config set registry https://registry.npmmirror.com \
     && npm install && npm install cross-env -g
 
-EXPOSE 80
+EXPOSE 3300
 
-CMD ["cross-env","PORT=80","node","/home/qqmusic/bin/www"]
+CMD ["cross-env","PORT=3300","node","/home/qqmusic/bin/www"]
